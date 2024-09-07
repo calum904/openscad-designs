@@ -15,7 +15,7 @@ SLIDE_FIT = 0.05;
 CALIPER_CARRIER_THICKNESS = 10;
 CALIPER_BRACKET_THICKNESS = 5.4;
 
-WHEEL_SPINDLE_SPACER_HEIGHT = 26.3;
+WHEEL_SPINDLE_SPACER_HEIGHT = 27;
 WHEEL_SPINDLE_SPACER_OUTER_RADIUS = 19;
 WHEEL_SPINDLE_RADIUS = 10;
 
@@ -29,6 +29,8 @@ SWINGING_ARM_SLIDE_CUTOUT_HEIGHT = 13.5;
 SWINGING_ARM_SLIDE_CUTOUT_DEPTH  = 12;
 SWINGING_ARM_SLIDE_CUTOUT_LENGTH = 55;
 SWINGING_ARM_SLIDE_DISTANCE_FROM_BOTTOM = 12;
+
+BRAKE_CALIPER_BOLT_DISTANCE = 93;
 
 /**
  * @brief Creates the left wheelspacer
@@ -90,40 +92,39 @@ module wheelSpindleSpacer(height) {
 /**
  * @brief The brake carrier
  */
-module brakeCarrier() {   
+module brakeCarrier() {
     union() {
         difference() {
             /* Brake Carrier */
             outlineBrakeCarrier(CALIPER_CARRIER_THICKNESS);
-    
+
             /* Caliper Mount */
             /* Cutout For Brake Mount */
             union() {
                 color("red")
                     translate([-8, -15, CALIPER_BRACKET_THICKNESS-CALIPER_CARRIER_THICKNESS-0.4 - INTERFERENCE_FIT])
                         cube([70, 40, CALIPER_BRACKET_THICKNESS]);
-            
+
                     color("red")
                         translate([20-82, 30, CALIPER_BRACKET_THICKNESS-CALIPER_CARRIER_THICKNESS-0.4 - INTERFERENCE_FIT])
                             cube([40, 40, CALIPER_BRACKET_THICKNESS]);
             }
             /* Holes */
-//            translate([-41, 43.64, 0])
-//                rotate([0, 0, -30])
-//                    union() {
-//                        cylinder(CALIPER_BRACKET_THICKNESS +10, 4.1, 4.1, center=true);
-//                        translate([85, 0, 0])
-//                            cylinder(CALIPER_BRACKET_THICKNESS+10, 4.1, 4.1, center=true);
-//                    }
-                    
+            union() {
+                translate([-43, 47.5, 0])
+                    cylinder(CALIPER_BRACKET_THICKNESS +10, 4.5, 4.5, center=true);
+                translate([28, 4, 0])
+                cylinder(CALIPER_BRACKET_THICKNESS+10, 4.5, 4.5, center=true);
+            }
+
             /* Bottom Left Cutout to make it round */
             translate([-INTERFERENCE_FIT, -INTERFERENCE_FIT, 0])
                 lowerLeftCornerCutout();
-            
+
             /* Cutout for the spindle to go through */
             translate([-(CARRIER_MAX_WIDTH/2) + WHEEL_SPINDLE_SPACER_OUTER_RADIUS, -(CARRIER_MAX_HEIGHT/2) + WHEEL_SPINDLE_SPACER_OUTER_RADIUS + CARRIER_HEIGHT_OFFSET, 0])
                 cylinder(WHEEL_SPINDLE_SPACER_HEIGHT+10, WHEEL_SPINDLE_RADIUS + SLIDE_FIT, WHEEL_SPINDLE_RADIUS + SLIDE_FIT, center=true);
-            
+
             /* Swinging arm slide cutout */
             translate([((CARRIER_MAX_WIDTH - SWINGING_ARM_SLIDE_CUTOUT_LENGTH)/2) + INTERFERENCE_FIT, ((-CARRIER_MAX_HEIGHT + SWINGING_ARM_SLIDE_CUTOUT_DEPTH)/2) + SWINGING_ARM_SLIDE_DISTANCE_FROM_BOTTOM, 5+INTERFERENCE_FIT])
                 swingingArmSlideCutout();
@@ -134,7 +135,7 @@ module brakeCarrier() {
             wheelSpindleSpacer(WHEEL_SPINDLE_SPACER_HEIGHT);
     }
 }
- 
+
 brakeCarrier();
 //translate([100, 0 ,0])
 //    leftWheelSpacer();
@@ -170,4 +171,5 @@ module bezier_polygon(points) {
 	steps = $fn <= 0 ? 30 : $fn;
 	polygon(bezier_coordinates(points, steps));
 }
+
 
