@@ -18,23 +18,25 @@ SLIDE_FIT = 0.05;
  * @brief Makes a brake clamp
  */
 module brakeLineClamp() {
-    brakeHoseRadius = 2;
-    brakeHoseHeight = 2;
-    clampDepth = 10;
+    brakeHoseRadius = 8;
+    brakeHoseHeight = 10;
+    
+    clampDepth  = 10;
+    clampHeight = 20;
     
     union() {
         difference() {
-            cube([3, clampDepth, clampDepth], center=true);
+            cube([3, clampDepth, clampHeight], center=true);
             rotate([0, 90, 0])
-                cylinder(3 + INTERFERENCE_FIT, 2, 2, center=true, $fn=20);
+                cylinder(3 + INTERFERENCE_FIT, 2, 2, center=true, $fn=50);
         }
 
-        translate([1.5, -((clampDepth/2) + brakeHoseHeight - 1), 0])
+        translate([1.5, -((clampDepth/2) + brakeHoseRadius -2), -5])
             difference() {
-                cylinder(brakeHoseHeight, brakeHoseRadius, brakeHoseRadius, center=true, $fn=20);
-                cylinder(brakeHoseHeight + INTERFERENCE_FIT, brakeHoseRadius - 0.5, brakeHoseRadius - 0.5, center=true, $fn=20);
+                cylinder(brakeHoseHeight, brakeHoseRadius, brakeHoseRadius, center=true, $fn=50);
+                cylinder(brakeHoseHeight + INTERFERENCE_FIT, brakeHoseRadius - 2, brakeHoseRadius - 2, center=true, $fn=50);
                 translate([brakeHoseRadius, 0, 0])
-                    cube([brakeHoseRadius * 2, brakeHoseRadius * 2, brakeHoseRadius + INTERFERENCE_FIT], center=true);    
+                    cube([brakeHoseRadius * 2, brakeHoseRadius * 2, brakeHoseHeight + INTERFERENCE_FIT], center=true);    
             }
         
     }
@@ -48,14 +50,14 @@ module pivotThroughHole() {
 
     union() {
         difference() {
-            translate([-1.1, -1, 0])
-                cube([1.3, 3, throughHoleHeight], center=true);
-                cylinder(throughHoleHeight + INTERFERENCE_FIT, 2, 2, center=true, $fn=20);
+            translate([-1.3, -1, 0])
+                cube([1.5, 3, throughHoleHeight], center=true);
+                cylinder(throughHoleHeight + INTERFERENCE_FIT, 2, 2, center=true, $fn=50);
         }
 
         difference() {
-            cylinder(throughHoleHeight, 2, 2, center=true, $fn=20);
-            cylinder(throughHoleHeight + INTERFERENCE_FIT, 1.5, 1.5, center=true, $fn=20);
+            cylinder(throughHoleHeight, 2, 2, center=true, $fn=50);
+            cylinder(throughHoleHeight + INTERFERENCE_FIT, 1.5, 1.5, center=true, $fn=50);
         }
     }
 }
@@ -102,21 +104,21 @@ module brakeGuide() {
             union() {
                 /* Top Pivot Clamp */
                 translate([0, 0, (brakeGuideHeight)/2 - 0.5])
-                    cylinder(1, 1.8, 1.8, center=true, $fn=20);
+                    cylinder(1, 1.8, 1.8, center=true, $fn=50);
                 /* Pivot */
-                cylinder(brakeGuideHeight, 1.3, 1.3, center=true, $fn=20);
+                cylinder(brakeGuideHeight, 1.3, 1.3, center=true, $fn=50);
                 
                 /* Bottom Pivot Clamp */
                 translate([0, 0, -(brakeGuideHeight)/2 + 0.5])
-                    cylinder(1, 1.8, 1.8, center=true, $fn=20);
+                    cylinder(1, 1.8, 1.8, center=true, $fn=50);
             }
 
         /* Clamp */
-        translate([-1.5, -forkRadius - 7, 5])
+        translate([-1.5, -forkRadius - 7, 0])
             brakeLineClamp();
-            
-        translate([2.5, -forkRadius - 7, 5])
-            rotate([0, 180, 0])
+
+        translate([2.5, -forkRadius - 7, 0])
+            mirror([180, 0, 0])
                 brakeLineClamp();
     }
 }
