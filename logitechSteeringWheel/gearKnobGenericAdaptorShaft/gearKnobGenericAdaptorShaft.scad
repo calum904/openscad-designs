@@ -47,7 +47,7 @@ module gearKnobGenericAdaptorShaft() {
     squarePegInsertDepth = 5;
     squarePegInsertHeight = 24;
 
-    /* For M4 Rivnut at 3mm then tap */
+    /* For M4 Helicoil at 3.3mm then tap */
     m4ScrewHoleUnderSizeRadius = 3;
     m4ScrewHoleFromBottom = 14;
 
