@@ -7,6 +7,7 @@
  *
  * @brief Yamaha DTRE Brake Carrier for 3ET Swinging Arm with Aprilia RS 125 Wheels
  */
+include <../../helios/wheelspacers/spacerUtils.scad>
 $fa = 0.01;
 
 INTERFERENCE_FIT = 0.001;
@@ -36,9 +37,19 @@ BRAKE_CALIPER_BOLT_DISTANCE = 93;
  * @brief Creates the left wheelspacer
  */
 module leftWheelSpacer() {
+    leftWheelSpacerHeight = 8;
+    spindleCutout = leftWheelSpacerHeight + SPROCKET_CARRIER_SPACER_HEIGHT + INTERFERENCE_FIT;
+
     difference() {
-        cylinder(8, WHEEL_SPINDLE_SPACER_OUTER_RADIUS+5, WHEEL_SPINDLE_SPACER_OUTER_RADIUS+5, center=true);
-        cylinder(8, WHEEL_SPINDLE_RADIUS,WHEEL_SPINDLE_RADIUS, center=true);
+        union() {
+            /* RS 125 Captive Spacer Joined with the DTR Spacing */
+            sprocketCarrierSpacer();
+
+            translate([0, 0, -(SPROCKET_CARRIER_SPACER_HEIGHT/2) - (leftWheelSpacerHeight-SWINGING_ARM_FACE_HEIGHT)/2 ])
+                cylinder(leftWheelSpacerHeight + SWINGING_ARM_FACE_HEIGHT, WHEEL_SPINDLE_SPACER_OUTER_RADIUS+5, WHEEL_SPINDLE_SPACER_OUTER_RADIUS+5, center=true);
+        }
+        translate([0, 0, -(SPROCKET_CARRIER_SPACER_HEIGHT - leftWheelSpacerHeight)/2 + .5 ])
+            cylinder(spindleCutout,  SPINDLE_RADIUS + SLIDE_FIT, SPINDLE_RADIUS + SLIDE_FIT, center=true);
     }
 }
 
@@ -137,8 +148,8 @@ module brakeCarrier() {
 }
 
 brakeCarrier();
-//translate([100, 0 ,0])
-//    leftWheelSpacer();
+translate([100, 0 ,0])
+    leftWheelSpacer();
 
 // Group ID: layer1
 module Layer_1() {
