@@ -19,4 +19,5 @@ module tabWasherSvg(washerThickness) {
         import(TAB_WASHER_SVG_PATH);
 }
 
-tabWasherSvg(TAB_WASHER_THICKNESS);
+linear_extrude(1.5)
+    tabWasherSvg(TAB_WASHER_THICKNESS);
